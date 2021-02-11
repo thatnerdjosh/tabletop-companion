@@ -1,4 +1,10 @@
+# Yes, this image has many layers leading to a marginally fatter
+# image, but that is expected for development
 FROM golang:1.15-alpine3.12
+
+# System deps
+# TODO: Extract env setup to base image
+RUN apk --no-cache add git
 
 # USERNAME == GROUP for now
 ARG USERNAME=odapps
@@ -14,8 +20,15 @@ RUN addgroup -g $USER_GID $USERNAME \
 COPY . /go/src
 WORKDIR /go/src
 
-# Add development dependencies
-RUN go get -v golang.org/x/tools/gopls@latest \
-    && go mod vendor
+# Add development dependencies along with vscode legacy dependencies
+# `gopls` should deprecate all of the extras :)
+RUN go get github.com/go-delve/delve \
+    && go get golang.org/x/lint/golint \
+    && go get github.com/ramya-rao-a/go-outline \
+    && go get github.com/uudashr/gopkgs \
+    && go get golang.org/x/tools/gopls@latest
+
+# Add app dependencies
+RUN go mod vendor
 
 USER $USERNAME

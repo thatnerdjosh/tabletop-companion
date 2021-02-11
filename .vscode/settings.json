@@ -1,0 +1,15 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "[dockerfile]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+    },
+}
